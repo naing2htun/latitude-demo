@@ -22,11 +22,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-      - name: Get PR title from commit
+      - name: Get commit message as title
         id: get-pr-title
         run: |
-          PR_TITLE=$(git log -1 --pretty=format:"%s")
-          echo "pr-title=$PR_TITLE" >> $GITHUB_OUTPUT
+          PR_TITLE="${{ github.event.head_commit.message }}"
+          {
+            echo "pr-title<<EOF"
+            echo "$PR_TITLE"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
           echo "Using title: $PR_TITLE"
       - name: Generate rollout plan for nonprod
         env:
