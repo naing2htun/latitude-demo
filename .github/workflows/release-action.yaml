@@ -9,12 +9,15 @@ on:
 
 jobs:
   rollout:
-    uses: naing2htun/actions/release-sql@main
-    with:
-      bytebase-url: ${{ vars.BYTEBASE_URL_NONPROD }}
-      bytebase-service-account: ${{ vars.BYTEBASE_SERVICE_ACCOUNT_NONPROD }}
-      project: "projects/latitude-demo"
-      targets: "instances/latitude-dev/databases/latitude-demo-dev,instances/latitude-qa/databases/latitude-demo-qa,instances/latitude-stg/databases/latitude-demo-stg"
-      file-pattern: "migrations/*.up.sql"
-    secrets:
-      bytebase-service-account-secret: ${{ secrets.BYTEBASE_SERVICE_ACCOUNT_SECRET_NONPROD }}
+    name: Release SQL migrations to nonprod
+    runs-on: ubuntu-latest
+    steps:
+      - uses: naing2htun/actions/release-sql@main
+        with:
+          bytebase-url: ${{ vars.BYTEBASE_URL_NONPROD }}
+          bytebase-service-account: ${{ vars.BYTEBASE_SERVICE_ACCOUNT_NONPROD }}
+          project: "projects/latitude-demo"
+          targets: "instances/latitude-dev/databases/latitude-demo-dev,instances/latitude-qa/databases/latitude-demo-qa,instances/latitude-stg/databases/latitude-demo-stg"
+          file-pattern: "migrations/*.up.sql"
+        secrets:
+          bytebase-service-account-secret: ${{ secrets.BYTEBASE_SERVICE_ACCOUNT_SECRET_NONPROD }}
