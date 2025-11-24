@@ -1,4 +1,4 @@
-name: Bytebase rollout SQL migrations
+name: Generate Bytebase rollout plan for SQL migrations
 
 on:
   push:
@@ -6,15 +6,15 @@ on:
       - main
     paths:
       - "migrations/*.up.sql"
-      - ".github/workflows/sql-release.yaml" # to allow workflow updates
+      - ".github/workflows/sql-plan.yaml" # to allow workflow updates
 jobs:
   rollout:
-    name: Release SQL migrations to nonprod
+    name: Generate Bytebase rollout plan
     runs-on: ubuntu-latest
     container:
       image: bytebase/bytebase-action:${{ vars.BYTEBASE_ACTION_VERSION }}
     steps:
-      - uses: naing2htun/actions/sql-release@main
+      - uses: naing2htun/actions/sql-plan@main
         with:
           bytebase-url: ${{ vars.BYTEBASE_URL_NONPROD }}
           bytebase-service-account: ${{ vars.BYTEBASE_SERVICE_ACCOUNT_NONPROD }}
