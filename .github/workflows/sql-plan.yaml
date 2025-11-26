@@ -8,17 +8,13 @@ on:
       - "migrations/*.up.sql"
       - ".github/workflows/sql-plan.yaml" # to allow workflow updates
 jobs:
-  rollout:
-    name: Generate Bytebase rollout plan
-    runs-on: ubuntu-latest
-    container:
-      image: bytebase/bytebase-action:${{ vars.BYTEBASE_ACTION_VERSION }}
-    steps:
-      - uses: naing2htun/actions/sql-plan@main
-        with:
-          bytebase-url: ${{ vars.BYTEBASE_URL_NONPROD }}
-          bytebase-service-account: ${{ vars.BYTEBASE_SERVICE_ACCOUNT_NONPROD }}
-          bytebase-service-account-secret: ${{ secrets.BYTEBASE_SERVICE_ACCOUNT_SECRET_NONPROD }}
-          project: "projects/latitude-demo"
-          targets: "instances/latitude-dev/databases/latitude-demo-dev,instances/latitude-qa/databases/latitude-demo-qa,instances/latitude-stg/databases/latitude-demo-stg"
-          file-pattern: "migrations/*.up.sql"
+  plan-nonprod:
+    uses: naing2htun/actions/.github/workflows/sql-plan.yml@main
+    with:
+      bytebase-url: ${{ vars.BYTEBASE_URL_NONPROD }}
+      bytebase-service-account: ${{ vars.BYTEBASE_SERVICE_ACCOUNT_NONPROD }}
+      project: "projects/latitude-demo"
+      targets: "instances/latitude-dev/databases/latitude-demo-dev,instances/latitude-qa/databases/latitude-demo-qa,instances/latitude-stg/databases/latitude-demo-stg"
+      file-pattern: "migrations/*.up.sql"
+    secrets:
+      bytebase-service-account-secret: ${{ secrets.BYTEBASE_SERVICE_ACCOUNT_SECRET_NONPROD }}
