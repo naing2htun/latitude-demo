@@ -1,5 +1,4 @@
-name: Generate Bytebase rollout plan for SQL migrations
-
+name: Generate Bytebase rollout plan
 on:
   push:
     branches:

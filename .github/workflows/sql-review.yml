@@ -1,4 +1,4 @@
-name: Bytebase review SQL migrations
+name: Review SQL migrations
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
       - ".github/workflows/sql-review.yaml" # to allow workflow updates
 
 jobs:
-  check-release-on-stg:
+  check-release-stg:
     permissions:
       pull-requests: write
     runs-on: ubuntu-latest
