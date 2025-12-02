@@ -9,7 +9,7 @@ on:
       - ".github/workflows/sql-review.yaml" # to allow workflow updates
 
 jobs:
-  check-release-on-dev:
+  check-release-on-stg:
     permissions:
       pull-requests: write
     runs-on: ubuntu-latest
@@ -25,7 +25,7 @@ jobs:
           BYTEBASE_SERVICE_ACCOUNT: ${{ vars.BYTEBASE_SERVICE_ACCOUNT_NONPROD }}
           BYTEBASE_SERVICE_ACCOUNT_SECRET: ${{ secrets.BYTEBASE_SERVICE_ACCOUNT_SECRET_NONPROD }}
           BYTEBASE_PROJECT: "projects/latitude-demo"
-          BYTEBASE_TARGETS: "instances/latitude-dev/databases/latitude-demo-dev"
+          BYTEBASE_TARGETS: "instances/latitude-stg/databases/latitude-demo-stg"
           FILE_PATTERN: "migrations/*.up.sql"
         run: |
           bytebase-action check \
