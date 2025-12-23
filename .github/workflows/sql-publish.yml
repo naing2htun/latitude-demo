@@ -1,18 +1,30 @@
-name: Publish migrations to deployment repo
+name: Publish migrations to deployment repos
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  # Non-production deployment (after successful plan generation)
   workflow_run:
     workflows: ["Generate Bytebase rollout plan"]
     types: [completed]
 
+  # Production deployment (triggered by staging promotion)
+  repository_dispatch:
+    types: [promote-to-production]
+
 jobs:
-  publish:
+  publish-nonprod:
+    if: github.event_name == 'workflow_run'
     uses: naing2htun/actions/.github/workflows/sql-publish.yml@main
     with:
       deployment-repo: "naing2htun/deployment"
       environments: '["qa", "stg"]'
     secrets:
       deployment-token: ${{ secrets.DEPLOYMENT_REPO_TOKEN }}
+
+  publish-prod:
+    if: github.event_name == 'repository_dispatch'
+    uses: naing2htun/actions/.github/workflows/sql-publish.yml@main
+    with:
+      deployment-repo: "naing2htun/prod-deployment"
+      environments: '["prod"]'
+    secrets:
+      deployment-token: ${{ secrets.PROD_DEPLOYMENT_REPO_TOKEN }}
