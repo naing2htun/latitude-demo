@@ -6,13 +6,9 @@ on:
     paths:
       - "migrations/*.up.sql"
       - ".github/workflows/sql-plan.yml" # to allow workflow updates
-  
-  repository_dispatch:
-    types: [promote-to-production]
 
 jobs:
   plan-nonprod:
-    if: github.event_name == 'push'
     uses: naing2htun/actions/.github/workflows/sql-plan.yml@main
     with:
       bytebase-url: ${{ vars.BYTEBASE_URL_NONPROD }}
@@ -24,7 +20,6 @@ jobs:
       bytebase-service-account-secret: ${{ secrets.BYTEBASE_SERVICE_ACCOUNT_SECRET_NONPROD }}
 
   plan-prod:
-    if: github.event_name == 'repository_dispatch'
     uses: naing2htun/actions/.github/workflows/sql-plan.yml@main
     with:
       bytebase-url: ${{ vars.BYTEBASE_URL_PROD }}

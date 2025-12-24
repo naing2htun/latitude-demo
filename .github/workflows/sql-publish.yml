@@ -1,4 +1,4 @@
-name: Publish migrations to deployment repos
+name: Publish migrations to deployment repo
 
 on:
   workflow_run:
@@ -7,7 +7,6 @@ on:
 
 jobs:
   publish-nonprod:
-    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
     uses: naing2htun/actions/.github/workflows/sql-publish.yml@main
     with:
       deployment-repo: "naing2htun/deployment"
@@ -16,10 +15,9 @@ jobs:
       deployment-token: ${{ secrets.DEPLOYMENT_REPO_TOKEN }}
 
   publish-prod:
-    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'repository_dispatch'
     uses: naing2htun/actions/.github/workflows/sql-publish.yml@main
     with:
       deployment-repo: "naing2htun/prod-deployment"
       environments: '["prod"]'
     secrets:
-      deployment-token: ${{ secrets.PROD_DEPLOYMENT_REPO_TOKEN }}
+      deployment-token: ${{ secrets.DEPLOYMENT_REPO_TOKEN }}
