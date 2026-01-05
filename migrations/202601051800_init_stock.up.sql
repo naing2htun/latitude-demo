@@ -1,0 +1,8 @@
+CREATE TABLE stock (
+  id SERIAL PRIMARY KEY,
+  product_id INTEGER NOT NULL,
+  quantity INTEGER NOT NULL DEFAULT 0,
+  location VARCHAR(255),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
